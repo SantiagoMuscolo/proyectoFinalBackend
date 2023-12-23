@@ -12,19 +12,23 @@
       background-color: #161616;
       color: #fff;
     }
+
     .card-custom {
       background-color: #495057;
       border: none;
       border-radius: 0.25rem;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     }
+
     .btn-custom {
       background-color: #6c757d;
       color: #fff;
     }
+
     .btn-custom:hover {
       background-color: #7a8288;
     }
+
     .icon {
       color: #adb5bd;
       margin-right: 8px;
@@ -43,12 +47,15 @@
         <h3 class="mb-2"><i class="fas fa-tag icon"></i>{{this.product.title}}</h3>
         <p class="mb-1"><strong>Precio:</strong> ${{this.product.price}}</p>
         <p class="mb-2"><strong>Cantidad:</strong> <span>{{this.quantity}}</span></p>
-        <button class="btn btn-custom"
-          onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')"><i class="fas fa-trash-alt"></i> Eliminar del carrito</button>
+        <button class="btn btn-custom" onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')"><i
+            class="fas fa-trash-alt"></i> Eliminar del carrito</button>
       </li>
+
+      {{log.cartId}}
       {{/each}}
     </ul>
-    <button class="btn btn-custom mt-3" onclick="checkout()" id="finalizarCompra"><i class="fas fa-shopping-cart"></i> Finalizar compra</button>
+    <button class="btn btn-custom mt-3" onclick="checkout()" id="finalizarCompra"><i class="fas fa-shopping-cart"></i>
+      Finalizar compra</button>
   </div>
 
   <script>
@@ -58,7 +65,16 @@
           method: 'DELETE',
         });
 
-        console.log(response)
+      if(response.status === 200){
+        Swal.fire({
+               title: 'El producto seleccionado ha sido eliminado de su carrito',
+          text: 'Por favor, refresque la pagina para ver los cambios.',
+              icon: 'success',
+              background: '#ffff', // Dark background color
+              color: '#ffff', // White text color
+              confirmButtonColor: '#6c757d', // Confirm button color
+            });
+      }
 
       } catch (error) {
         console.error(error);
@@ -67,12 +83,31 @@
 
     async function checkout() {
       try {
+
+        Swal.fire({
+          title: 'Procesando...',
+          text: 'Por favor, espera mientras se completa la compra.',
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         const res = await fetch(`/api/carts/purchase`, {
           method: 'PUT',
         });
 
-        if(res?.status === 200){
+        Swal.close();
+
+        if (res?.status === 200) {
           window.location.href = '/checkout';
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al completar la compra.',
+            icon: 'error',
+            confirmButtonColor: '#d33',
+          });
         }
       } catch (error) {
         console.error(error);
@@ -82,6 +117,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 
 </html>

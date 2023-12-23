@@ -91,7 +91,10 @@
         <div class="form-group">
           <input type="text" class="form-control" id="description" placeholder="description" required>
         </div>
-        <button type="submit" class="btn btn-primary mt-4">Add Product</button>
+        <div style="position:relative; left:417px;">
+          <button type="submit" class="btn btn-primary mt-4">Add Product</button>
+        </div>
+
       </form>
       </ul>
 
@@ -121,7 +124,7 @@
       </div>
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
@@ -145,6 +148,17 @@
             headers: { "Content-type": "application/json; charset=UTF-8" },
             body: JSON.stringify(product)
           });
+          console.log(response)
+          if (response.status === 200) {
+            Swal.fire({
+              title: 'Congratulations!',
+              text: 'Tu producto ha sido agregado al carrito con exito!',
+              icon: 'success',
+              background: '#ffff', // Dark background color
+              color: '#ffff', // White text color
+              confirmButtonColor: '#6c757d', // Confirm button color
+            });
+          }
           console.log(response);
         } catch (error) {
           console.error('Error al realizar la solicitud POST:', error);
@@ -189,6 +203,16 @@
           document.getElementById("price").value = "";
           document.getElementById("stock").value = "";
           document.getElementById("description").value = "";
+
+          Swal.fire({
+            title: 'Congratulations!',
+            text: 'Tu producto ha sido agregado a la lista con exito, porfavor refresca la pagina para ver los cambios!',
+            icon: 'success',
+            background: '#ffff', // Dark background color
+            color: '#ffff', // White text color
+            confirmButtonColor: '#6c757d', // Confirm button color
+          });
+
         }
       } catch (error) {
         console.error("Error al realizar la solicitud POST:", error);
@@ -207,7 +231,29 @@
               method: "DELETE",
               headers: { "Content-type": "application/json; charset=UTF-8" },
             });
-            console.log(res);
+
+            if (res.status === 403) {
+              Swal.fire({
+                title: 'Oops...',
+                text: 'No puedes eliminar un producto del cual no eres el creador.',
+                icon: 'error',
+                background: '#ffff', // Dark background color
+                color: '#ffff', // White text color
+                confirmButtonColor: '#6c757d', // Confirm button color
+                iconColor: '#dc3545' // Color for the icon
+              });
+            }
+            if (res.status === 204) {
+              Swal.fire({
+                title: 'Congratulations!',
+                text: 'Tu producto ha sido eliminado con exito, porfavor refresca la pagina para ver los cambios en tu lista.',
+                icon: 'success',
+                background: '#ffff', // Dark background color
+                color: '#ffff', // White text color
+                confirmButtonColor: '#6c757d', // Confirm button color
+              });
+            }
+            console.log(res)
           } catch (error) {
             console.error(error);
           }

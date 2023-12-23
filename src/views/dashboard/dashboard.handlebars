@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@
       font-family: 'Roboto', sans-serif;
       background: #161616;
     }
+
     .white-shadow {
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
@@ -45,6 +47,7 @@
     </ul>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     async function changeRole(userId) {
       const roleSelect = document.getElementById(`roleSelect-${userId}`);
@@ -57,17 +60,40 @@
         },
         body: JSON.stringify({ userId, role: selectedRole })
       });
+
+      if (response.status === 200) {
+            Swal.fire({
+              title: 'Congratulations!',
+              text: 'El rol del usuario ha sido modificado porfavor refresque la pagina para ver los cambios!',
+              icon: 'success',
+              background: '#ffff', // Dark background color
+              color: '#ffff', // White text color
+              confirmButtonColor: '#6c757d', // Confirm button color
+            });
+          }
     }
 
     async function deleteUser(userId) {
-      try{
+      try {
         const response = await fetch(`/api/users/dashboard/delete-user/${userId}`, {
           method: 'DELETE',
         });
-      } catch(error) {
+
+        if (response.status === 200) {
+            Swal.fire({
+              title: 'Congratulations!',
+              text: 'El usuario ha sido eliminado con exito porfavor refresque la pagina para ver los cambios!',
+              icon: 'success',
+              background: '#ffff', // Dark background color
+              color: '#ffff', // White text color
+              confirmButtonColor: '#6c757d', // Confirm button color
+            });
+          }
+      } catch (error) {
         console.error(error);
       }
     }
   </script>
 </body>
+
 </html>

@@ -15,8 +15,8 @@ module.exports = app => {
     router.get('/', cartsController.getAllCarts);
     router.post('/', cartsController.createCart);
     router.get('/', cartsController.getCart);
-    router.get('/:cid', cartsController.products);
     router.post('/products', cartsController.addProduct);
+    router.get('/:cid', cartsController.products);
     router.put('/purchase', cartsController.purchase);
     router.delete('/:cid/products/:pid', cartsController.deleteProductFromCart);
     router.put('/:cid/products/:pid', cartsController.updateProductsQuantity);

@@ -1,28 +1,71 @@
-<div class="container">
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-4 oofset-md-4">
-            <h1 class="text-white">Sign in!</h1>
-            <form>
-                <div class="mb-3">
-                    <label class="form-label text-white">Usuario</label>
-                    <input type="text" class="form-control" id="email"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-white">Contraseña</label>
-                    <input type="password" class="form-control" id="password"/>
-                </div>
-                <a style="display: block" href="/forgot-password">olvide mi Contraseña</a>
-                <button type="button" class="btn btn-primary" id="btnLogIn">Sign in</button>
-                <button type="button" class="btn btn-primary" id="btnRegister">Sign up</button>
-                <button type="button" class="btn btn-secondary"><a href="/githubcallback" class="text-decoration-none text-white"><i class="fab fa-github"></i> Sign In with GitHub</a></button>
-            </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+      font-family: 'Roboto', sans-serif;
+      background: #161616;
+    }
+        .form-icon {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.75rem;
+            height: 2.75rem;
+            line-height: 2.75rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+        .form-input {
+            padding-left: 2.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center" style="margin-top: 15rem;">
+            <div class="col-md-4">
+                <h1 class="text-white text-center mb-4">Sign in!</h1>
+                <form>
+                    <div class="mb-3 position-relative">
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" class="form-control form-input" id="email" placeholder="Usuario"/>
+                    </div>
+                    <div class="mb-3 position-relative">
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control form-input" id="password" placeholder="Contraseña"/>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary" id="btnLogIn">Sign in</button>
+                        <button type="button" class="btn btn-primary" id="btnRegister">Sign up</button>
+                        <button type="button" class="btn btn-secondary">
+                            <a href="/githubcallback" class="text-decoration-none text-white">
+                                <i class="fab fa-github"></i> Sign In with GitHub
+                            </a>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="login/login.js"></script>
-<script>
-    document.getElementById("btnRegister").addEventListener("click", function() {
-        window.location.href = "/register";
-    });
-</script>
+    <script src="login/login.js"></script>
+    <script>
+        document.getElementById("btnRegister").addEventListener("click", function() {
+            window.location.href = "/register";
+        });
+    </script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

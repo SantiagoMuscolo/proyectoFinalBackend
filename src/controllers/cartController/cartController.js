@@ -48,10 +48,10 @@ class CartController {
 
   async addProduct(req, res) {
     try {
-      const cartId = req?.user?.user?.cart?._id;
-      const owner = req.user.user.email
+      const cartId = req?.user?.user?.cart?._id || req?.user?.cart;
+      console.log(req.user)
+      const owner = req?.user?.user?.email || req?.user?.email
       const product = req.body.id;
-
       const cart = await CartRepository.addProductToCart(cartId, product, owner);
       if (cart) res.status(200).json({ message: 'Producto subido exitosamente!' });
       else res.status(500).json({ error: 'Error al subir el producto' });
@@ -187,9 +187,10 @@ class CartController {
   async purchase(req, res) {
 
     try {
-      const cartId = req?.user?.user?.cart?._id;
+      console.log(req?.user?.emai !== undefined)
+      const cartId = req?.session?.user?.cart !== undefined ? req?.session?.user?.cart : req?.user?.user?.cart?._id;
       const cart = await CartRepository.getProducts(cartId);
-      const userMail = req?.user?.user?.email
+      const userMail = req?.user?.email !== undefined ? req?.user?.email : req?.user?.user?.email;
       
 
       if (!cart) {
@@ -208,8 +209,6 @@ class CartController {
       }
 
       await CartRepository.deleteProductsFromCart(cartId);
-
-      const cartItemsFormatted = CartRepository.formatCartItems(cart);
       
       await sendPurchaseEmail(userMail, cart);
       res.status(200).json({ message: 'Compra realizada con éxito' });

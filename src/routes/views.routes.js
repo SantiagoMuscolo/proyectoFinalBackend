@@ -111,7 +111,8 @@ module.exports = (app) => {
 
   app.get('/carts', validateToken, async (req, res) => {
     try {
-      const cartId = req.user.cart;
+      const cartId = req?.session?.user?.cart !== undefined ? req?.session?.user?.cart?._id : req?.user?.cart;
+        console.log(req?.session?.user?.cart)
       const cartItems = await cart.getCart(cartId);
 
       if (cartItems) res.render('cart/cart', { cartItems, cartId });
@@ -167,7 +168,8 @@ module.exports = (app) => {
   app.get('/profile', (req, res) => {
     if (req.isAuthenticated()) {
       const user = req.user;
-      res.render('user/profile', { ...user });
+      const validation = user?.user === undefined ? user : user?.user
+      res.render('user/profile', { user: validation });
     } else {
       res.redirect('/');
     }

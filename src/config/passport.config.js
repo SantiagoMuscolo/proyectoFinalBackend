@@ -83,13 +83,18 @@ const initializePassport = () => {
       if (user) {
         return done(null, user);
       } else {
-        let newUser = {
+        const cartId = await cartManager.createCart();
+        const role = 'admin';
+        const newUser = {
           first_name: profile._json.name,
           last_name: "",
           email: profile._json.email,
           age: 100,
-          password: ""
-        }
+          password: "",
+          role,
+          cart: cartId,
+          isPremium: true
+        };
 
         let result = await userModel.create(newUser);
 

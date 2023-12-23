@@ -38,10 +38,27 @@
     }
 
     #product-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background-color: #495057;
       margin-top: 10px;
       padding: 10px;
       border-radius: 5px;
+    }
+
+    #product-list li span {
+      flex-grow: 1;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
     }
   </style>
 </head>
@@ -54,21 +71,13 @@
     <button id="add-product-button" class="btn btn-custom">Agregar Producto</button>
 
     <ul id="product-list">
-      {{#each products}}
-      <li>
-        <span>{{this.title}}</span>
-        <!-- Aquí puedes agregar un botón de eliminar si lo necesitas -->
-      </li>
-      {{/each}}
+      <!-- Product list will be populated here -->
     </ul>
   </div>
-
-
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    console.log(socket)
 
     socket.on('initial products', (products) => {
       renderProducts(products);
@@ -80,26 +89,49 @@
 
       products.forEach((product) => {
         const listItem = document.createElement('li');
+        listItem.setAttribute('data-product-id', product.id); // Ensure this is set correctly
+
         const productSpan = document.createElement('span');
         productSpan.textContent = product.title;
         listItem.appendChild(productSpan);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Eliminar';
-        deleteButton.addEventListener('click', () => {
-          deleteProduct(product.id);
-        });
+        const deleteButton = createDeleteButton(product.id);
         listItem.appendChild(deleteButton);
-
-        listItem.setAttribute('data-product-id', product.id);
 
         productList.appendChild(listItem);
       });
     }
 
+    function createDeleteButton(productId) {
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn btn-danger btn-sm';
+      deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteButton.addEventListener('click', () => {
+        deleteProduct(productId); // Ensure productId is being passed correctly
+      });
+
+      return deleteButton;
+    }
+
+    function deleteProduct(productId) {
+      // Log the productId to debug
+      console.log('Deleting product with ID:', productId);
+
+      const productList = document.getElementById('product-list');
+      const listItem = document.querySelector(`li[data-product-id="${productId}"]`);
+
+      if (listItem) {
+        productList.removeChild(listItem);
+      }
+
+      socket.emit('delete product', productId);
+    }
+
     function addProduct(newProduct) {
       const productList = document.getElementById('product-list');
       const listItem = document.createElement('li');
+      listItem.setAttribute('data-product-id', newProduct.id);
+
       const productSpan = document.createElement('span');
       productSpan.textContent = newProduct.title;
       listItem.appendChild(productSpan);
@@ -108,31 +140,6 @@
       listItem.appendChild(deleteButton);
 
       productList.appendChild(listItem);
-
-      productList.appendChild(listItem);
-    }
-
-    function createDeleteButton(productId) {
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Eliminar';
-      deleteButton.addEventListener('click', () => {
-        const listItem = deleteButton.parentNode;
-        listItem.remove();
-        socket.emit('delete product', productId)
-      });
-
-      return deleteButton;
-    }
-
-    function deleteProduct(productId) {
-      const productList = document.getElementById('product-list');
-      const listItem = document.querySelector(`li[data-product-id="${productId}"]`);
-
-      if (listItem) {
-        productList.removeChild(listItem);
-      }
-
-      socket.emit('delete product', productId)
     }
 
     const addProductButton = document.getElementById('add-product-button');

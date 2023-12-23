@@ -13,7 +13,7 @@ module.exports = app => {
 
     app.use('/api/products', router);
 
-    router.get('/', validateRole('admin'), productsController.getProducts);
+    router.get('/', productsController.getProducts);
     router.get('/:pid', validateRole('admin'), productsController.getProductById);
     router.post('/', validateRole('admin'), productsController.addProduct);
     router.put('/:pid', validateRole('admin'), productsController.updateProduct);
