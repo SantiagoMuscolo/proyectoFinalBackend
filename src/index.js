@@ -24,6 +24,8 @@ const swaggerOptions = {
   apis: [`./src/docs/**/*.yaml`], 
 };
 
+const port = process.env.PORT || 3000;
+
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 class Server {
@@ -49,7 +51,6 @@ class Server {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(addLoger)
     this.app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
     this.app.get("/loggerTest", (req, res) => {
       req.logger?.http("Alerta")
       res.send({message: "Prueba de logger!"})
@@ -65,7 +66,7 @@ class Server {
   }
 
   listen() {
-    this.server.listen(PORT, () => { console.log(`http://localhost:${PORT}`) });
+    this.server.listen(port, '0.0.0.0', () => { console.log(`http://localhost:${PORT}`) });
     mongoose.connect(process.env.MONGO_URL);
   }
 }
