@@ -55,6 +55,7 @@ class ProductRepository {
 
   async deleteProduct(id) {
     try {
+      console.log(id)
       return productModel.deleteOne({ _id: id });
     } catch (error) {
       console.log(error);

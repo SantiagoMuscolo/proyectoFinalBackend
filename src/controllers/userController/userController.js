@@ -228,8 +228,8 @@ class UserController {
     }
   }
 
-  async getAllUser() {
-    const users = await userRepository.getAllUser()
+  async getAllUser(req, res) {
+    const users = await userRepository.getAllUsers()
     res.status(200).json(users);
   }
 

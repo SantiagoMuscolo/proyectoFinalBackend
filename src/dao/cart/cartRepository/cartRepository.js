@@ -59,6 +59,7 @@ class CartRepository {
       if (isOwnerProduct) return 'Este producto le pertenece';
 
       const cart = await CartModel.findOne({ _id: cartId });
+      console.log(cart)
       if (!cart) throw new Error('Carrito no encontrado');
 
       const existingProduct = cart?.products.find((product) => product.product._id.toString() === productId);
@@ -150,6 +151,18 @@ class CartRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  async formatCartItems(cart) {
+    return cart.map(item => {
+      return `
+        Producto: ${item.product.title}
+        Descripción: ${item.product.description}
+        Precio: $${item.product.price}
+        Cantidad: ${item.quantity}
+        Total: $${item.quantity * item.product.price}
+      `.trim(); // trim() para eliminar espacios en blanco iniciales y finales
+    }).join('\n\n'); // Separar cada artículo por dos saltos de línea
   }
 }
 

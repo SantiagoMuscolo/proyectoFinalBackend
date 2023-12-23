@@ -1,17 +1,69 @@
-<div class="container">
-  <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card" style="width: 35rem;">
-      <div class="card-body">
-        <h1>Welcome, {{user.first_name}} {{user.last_name}} {{first_name}}!</h1>
-        <p>Email: {{user.email}} {{email}}</p>
-        <p>Role: {{user.role}}</p>
-        <p>Age: {{user.age}} {{age}}</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil del Usuario</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      background-color: #161616;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .card-custom {
+      background-color: #495057;
+      border: none;
+      border-radius: 0.25rem;
+    }
+    .btn-custom {
+      background-color: #6c757d;
+      color: #fff;
+    }
+    .btn-custom:hover {
+      background-color: #7a8288;
+    }
+    .icon {
+      color: #adb5bd;
+      margin-right: 8px;
+    }
+    .white-shadow {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="card card-custom white-shadow" style="width: 50rem;">
+        <div class="card-body">
+          <h1 class="card-title">
+            <i class="fas fa-user-circle icon"></i>
+            Bienvenido, {{user.first_name}} {{user.last_name}}!
+          </h1>
+          <p class="card-text">
+            <i class="fas fa-envelope icon"></i>
+            Email: {{user.email}}
+          </p>
+          <p class="card-text">
+            <i class="fas fa-user-tag icon"></i>
+            Rol: {{user.role}}
+          </p>
+          <p class="card-text">
+            <i class="fas fa-birthday-cake icon"></i>
+            Edad: {{user.age}}
+          </p>
+        </div>
+        <form method="post" action="/api/sessions/logout">
+          <button type="submit" class="btn btn-custom w-100">Cerrar Sesión</button>
+        </form>
       </div>
-      <form method="post" action="/api/sessions/logout">
-        <button type="submit" class="btn btn-danger w-100">Log out</button>
-      </form>
     </div>
   </div>
-</div>
 
-<script>console.log({{ user.first_name }} {{ user.last_name }})</script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

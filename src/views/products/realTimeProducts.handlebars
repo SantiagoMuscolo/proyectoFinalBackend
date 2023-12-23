@@ -1,23 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+  <meta charset="UTF-8">
   <title>Real Time Products</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      background-color: #161616;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn-custom {
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      margin-top: 10px;
+    }
+
+    .btn-custom:hover {
+      background-color: #7a8288;
+    }
+
+    #product-name-input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    #product-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #product-list li {
+      background-color: #495057;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Real Time Products</h1>
+  <h1 style="padding: 2rem;">Real Time Products</h1>
 
-  <input type="text" id="product-name-input" placeholder="Nombre del producto">
-  <button id="add-product-button">Agregar Producto</button>
+  <div style="padding: 2rem;">
+    <input type="text" id="product-name-input" placeholder="Nombre del producto" class="form-control">
+    <button id="add-product-button" class="btn btn-custom">Agregar Producto</button>
 
-  <ul id="product-list">
-    {{#each products}}
-    <li>
-      <span>{{this.title}}</span>
-    </li>
-    {{/each}}
-  </ul>
+    <ul id="product-list">
+      {{#each products}}
+      <li>
+        <span>{{this.title}}</span>
+        <!-- Aquí puedes agregar un botón de eliminar si lo necesitas -->
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 
 
 

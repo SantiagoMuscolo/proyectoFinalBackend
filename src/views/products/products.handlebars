@@ -1,25 +1,86 @@
-<div class="d-flex justify-content-center align-items-center vh-100">
-  <div class="bg-white rounded p-3 product-list flex-column align-items-center shadow">
-    <h1 class="text-dark">Product List</h1>
-    <ul class="list-group">
-      {{#each products}}
-      <li class="list-group-item gap-3 text-dark d-flex justify-content-between align-items-center">
-        <span class="">{{this.title}}</span>
-        <div>
-          <a href="/products/{{this.id}}" class="btn btn-primary btn-sm">View Details</a>
-          <button class="btn btn-success btn-sm ml-2 add-to-cart" data-product-id="{{this.id}}" data-product-title="
-            {{this.title}}" data-product-price="{{this.price}}">Add to
-            Cart</button>
-          <button type="button" id="btn-delete" class="btn btn-danger btn-sm ml-2 add-to-cart"
-            data-product-id="{{this.id}}">Delete
-            Product</button>
-        </div>
-      </li>
-      {{/each}}
-      <h2 class="mt-3">Add Product</h2>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Productos</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #161616;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .card-custom {
+      background-color: #495057;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 20px;
+      margin: auto;
+      max-width: 800px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-custom {
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background-color: #7a8288;
+    }
+
+    .list-group-item {
+      background-color: #343a40;
+      border: none;
+    }
+
+    .form-control {
+      background-color: #495057;
+      color: #fff;
+      border: 1px solid #6c757d;
+    }
+
+    .page-link {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .page-link:hover {
+      color: #161616;
+      background-color: #adb5bd;
+      border-color: #adb5bd;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card-custom">
+      <h1 class="text-center">Lista de Productos</h1>
+      <ul class="list-group mb-3">
+        {{#each products}}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span style="color:white; margin-right: 40px;">{{this.title}}</span>
+          <div>
+            <a href="/products/{{this.id}}" class="btn btn-custom btn-sm">Ver Detalles</a>
+            <button class="btn btn-success btn-sm ml-2 add-to-cart" data-product-id="{{this.id}}"
+              data-product-title="{{this.title}}" data-product-price="{{this.price}}">Añadir al Carrito</button>
+            <button type="button" id="btn-delete" class="btn btn-danger btn-sm ml-2 btn-delete"
+              data-product-id="{{this.id}}">Eliminar Producto</button>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+      <h2>Agregar Producto</h2>
       <form id="productForm" class="mt-3">
         <div class="form-group">
           <input type="text" class="form-control" id="title" placeholder="Title" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="code" placeholder="code" required>
         </div>
         <div class="form-group">
           <input type="number" class="form-control" id="price" placeholder="Price" required>
@@ -32,114 +93,129 @@
         </div>
         <button type="submit" class="btn btn-primary mt-4">Add Product</button>
       </form>
-    </ul>
+      </ul>
 
-    <div class="mt-3">
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          {{#if hasPrevPage}}
-          <li class="page-item">
-            <a class="page-link text-black" href="{{prevPageLink}}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              {{page}}
-            </a>
-          </li>
-          {{/if}}
+      <div class="mt-3">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            {{#if hasPrevPage}}
+            <li class="page-item">
+              <a class="page-link text-black" href="{{prevPageLink}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                {{page}}
+              </a>
+            </li>
+            {{/if}}
 
-          {{#if hasNextPage}}
-          <p class="text-white">batata</p>
-          <li class="page-item">
-            <a class="page-link text-black" href="{{nextPageLink}}" aria-label="Next">
-              {{page}}
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-          {{/if}}
-        </ul>
-      </nav>
+            {{#if hasNextPage}}
+            <p class="text-white">batata</p>
+            <li class="page-item">
+              <a class="page-link text-black" href="{{nextPageLink}}" aria-label="Next">
+                {{page}}
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {{/if}}
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const addToCartButtons = document.querySelectorAll('.add-to-cart');
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', async (event) => {
-      const productId = event.target.getAttribute('data-product-id');
-      const productTitle = event.target.getAttribute('data-product-title');
-      const productPrice = event.target.getAttribute('data-product-price');
-      const productDescription = event.target.getAttribute('data-product-description');
+  <script>
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', async (event) => {
+        const productId = event.target.getAttribute('data-product-id');
+        const productTitle = event.target.getAttribute('data-product-title');
+        const productPrice = event.target.getAttribute('data-product-price');
+        const productDescription = event.target.getAttribute('data-product-description');
 
-      const product = {
-        id: productId,
-        title: productTitle,
-        price: parseFloat(productPrice),
-        description: productDescription
+        const product = {
+          id: productId,
+          title: productTitle,
+          price: parseFloat(productPrice),
+          description: productDescription
+        };
+
+        console.log(product)
+        try {
+          const response = await fetch(`/api/carts/products`, {
+            method: "POST",
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+            body: JSON.stringify(product)
+          });
+          console.log(response);
+        } catch (error) {
+          console.error('Error al realizar la solicitud POST:', error);
+        }
+      });
+    });
+
+    const productForm = document.getElementById("productForm");
+    productForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const title = document.getElementById("title").value;
+      const code = document.getElementById("code").value;
+      const price = parseFloat(document.getElementById("price").value);
+      const stock = document.getElementById("stock").value;
+      const description = document.getElementById("description").value;
+
+      if (!title || !code || isNaN(price) || price <= 0 || !stock || !description) {
+        alert("Por favor, ingrese información válida.");
+        return;
+      }
+
+      const productData = {
+        title,
+        code,
+        price,
+        stock,
+        description
       };
 
       try {
-        const response = await fetch(`/api/carts/products`, {
+        const response = await fetch("/api/products", {
           method: "POST",
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-          body: JSON.stringify(product)
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productData),
         });
-        console.log(response);
+
+        if (response.status === 201) {
+          document.getElementById("title").value = "";
+          document.getElementById("code").value = "";
+          document.getElementById("price").value = "";
+          document.getElementById("stock").value = "";
+          document.getElementById("description").value = "";
+        }
       } catch (error) {
-        console.error('Error al realizar la solicitud POST:', error);
+        console.error("Error al realizar la solicitud POST:", error);
       }
     });
-  });
 
-  const productForm = document.getElementById("productForm");
-  productForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const title = document.getElementById("title").value;
-    const code = document.getElementById("code").value;
-    const price = parseFloat(document.getElementById("price").value);
-    const stock = document.getElementById("stock").value;
-    const description = document.getElementById("description").value;
+    document.addEventListener('DOMContentLoaded', function () {
+      const deleteButtons = document.querySelectorAll('.btn-delete');
 
-    if (!title || !code || isNaN(price) || price <= 0 || !stock || !description) {
-      alert("Por favor, ingrese información válida.");
-      return;
-    }
-
-    const productData = {
-      title,
-      code,
-      price,
-      stock,
-      description
-    };
-
-    try {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+          const productId = event.target.getAttribute('data-product-id');
+          console.log(productId);
+          try {
+            const res = await fetch(`/api/products/${productId}`, {
+              method: "DELETE",
+              headers: { "Content-type": "application/json; charset=UTF-8" },
+            });
+            console.log(res);
+          } catch (error) {
+            console.error(error);
+          }
+        });
       });
-
-      if (response.status === 201) {
-        document.getElementById("title").value = "";
-        document.getElementById("code").value = "";
-        document.getElementById("price").value = "";
-        document.getElementById("stock").value = "";
-        document.getElementById("description").value = "";
-      }
-    } catch (error) {
-      console.error("Error al realizar la solicitud POST:", error);
-    }
-  });
-
-  const btnDelete = document.getElementById('btn-delete');
-  btnDelete.addEventListener('click', async (event) => {
-    const productId = btnDelete.getAttribute('data-product-id');
-    const res = await fetch(`/api/products/${productId}`, {
-      method: "DELETE",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
     });
-    console.log(res);
-  });
-</script>
+
+  </script>
+</body>
+
+</html>

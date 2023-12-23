@@ -17,10 +17,10 @@ module.exports = app => {
     router.get('/', cartsController.getCart);
     router.get('/:cid', cartsController.products);
     router.post('/products', cartsController.addProduct);
+    router.put('/purchase', cartsController.purchase);
     router.delete('/:cid/products/:pid', cartsController.deleteProductFromCart);
     router.put('/:cid/products/:pid', cartsController.updateProductsQuantity);
     router.put('/:cid', cartsController.updateProductsInCart);
-    router.put('/purchase', cartsController.purchase);
     router.delete('/:cid', cartsController.deleteProductsFromCart);
 }
 

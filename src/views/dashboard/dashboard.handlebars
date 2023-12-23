@@ -1,58 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title>Dashboard</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #161616;
+    }
+    .white-shadow {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+  </style>
 </head>
 
 <body>
-  <h1 class="text-center">Usuarios en el Dashboard</h1>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4 text-white">Usuarios en el Dashboard</h1>
 
-  <ul class="">
-    {{#each users}}
-    <li>
-      <span>
-        {{this.first_name}} {{this.last_name}} - {{this.email}} - Edad: {{this.age}} - Role: {{this.role}}
-      </span>
-      <select id="roleSelect-{{this.id}}">
-        <option value="">Seleccione un rol</option>
-        <option value="user">Usuario</option>
-        <option value="moderator">Moderador</option>
-        <option value="admin">Administrador</option>
-      </select>
-      <button class="btn btn-success btn-sm ml-2" onclick="changeRole('{{this.id}}')">Cambiar role</button>
-      <button class="btn btn-danger btn-sm ml-2" onclick="deleteUser('{{this.id}}')">Eliminar</button>
-    </li>
-    {{/each}}
-  </ul>
-</body>
+    <ul class="list-unstyled">
+      {{#each users}}
+      <li class="card p-3 mb-2 white-shadow">
+        <div class="d-flex justify-content-between align-items-center">
+          <span>
+            {{this.first_name}} {{this.last_name}} - {{this.email}} - Edad: {{this.age}} - Rol: {{this.role}}
+          </span>
+          <div>
+            <select id="roleSelect-{{this.id}}" class="form-control d-inline-block w-auto">
+              <option value="">Seleccione un rol</option>
+              <option value="user">Usuario</option>
+              <option value="moderator">Moderador</option>
+              <option value="admin">Administrador</option>
+            </select>
+            <button class="btn btn-success btn-sm ml-2" onclick="changeRole('{{this.id}}')">Cambiar rol</button>
+            <button class="btn btn-danger btn-sm ml-2" onclick="deleteUser('{{this.id}}')">Eliminar</button>
+          </div>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 
-</html>
+  <script>
+    async function changeRole(userId) {
+      const roleSelect = document.getElementById(`roleSelect-${userId}`);
+      const selectedRole = roleSelect.value;
 
-<script>
-  async function changeRole(userId) {
-    const roleSelect = document.getElementById(`roleSelect-${userId}`);
-    const selectedRole = roleSelect.value;
-
-    const response = await fetch('/api/users/dashboard/change-role', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userId, role: selectedRole })
-    });
-  }
-
-  async function deleteUser(userId) {
-    try{
-      const response = await fetch(`/api/users/dashboard/delete-user/${userId}`, {
-        method: 'DELETE',
+      const response = await fetch('/api/users/dashboard/change-role', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, role: selectedRole })
       });
-    } catch(error) {
-      throw error;
     }
-  }
-</script>
+
+    async function deleteUser(userId) {
+      try{
+        const response = await fetch(`/api/users/dashboard/delete-user/${userId}`, {
+          method: 'DELETE',
+        });
+      } catch(error) {
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -97,8 +97,9 @@ module.exports = (app) => {
     try {
       const pm = require('../dao/products/productsService/productManager');
       const productId = parseInt(req.params.productId);
+      console.log(productId)
       const product = await pm.getProductById(productId);
-
+     
       if (product) {
         res.render('products/productDetails', { product });
         console.log(product)

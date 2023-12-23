@@ -30,6 +30,7 @@ const initializePassport = () => {
         if (user) return done(null, false);
         const hashedPassword = await createHash(password);
         const cartId = await cartManager.createCart();
+       
 
         const role = 'admin';
         const newUser = {
@@ -42,7 +43,6 @@ const initializePassport = () => {
           cart: cartId,
           isPremium: false
         };
-
 
         let result = await userModel.create(newUser);
         if (result) {

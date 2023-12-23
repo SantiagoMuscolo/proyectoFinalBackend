@@ -3,6 +3,7 @@ const ProductRepository = require('../../dao/products/productRepository/productR
 const CustomError = require('../../services/errors/CustomError');
 const EErrors = require('../../services/errors/enums');
 const { generateParamErrorInfo } = require('../../services/errors/info');
+const { sendPurchaseEmail } = require('../../mail/emailService');
 
 const productRepository = new ProductRepository();
 
@@ -47,7 +48,7 @@ class CartController {
 
   async addProduct(req, res) {
     try {
-      const cartId = req.user?.user.cart._id;
+      const cartId = req?.user?.user?.cart?._id;
       const owner = req.user.user.email
       const product = req.body.id;
 
@@ -63,7 +64,7 @@ class CartController {
     let cartId;
     try {
       cartId = req.params.cid;
-      console.log(cartId);
+      console.log(cartId)
       const productId = req.params.pid;
 
       await CartRepository.deleteProduct(cartId, productId);
@@ -95,7 +96,8 @@ class CartController {
 
   async updateProductsInCart(req, res) {
     try {
-      const cartId = req.params.cid;
+      
+      const cartId = req?.params?.cid;
       const { newProducts } = req.body;
 
       if (!cartId || isNaN(cartId)) {
@@ -180,12 +182,15 @@ class CartController {
     }
   }
 
+  
+
   async purchase(req, res) {
 
     try {
-      const cartId = req.user;
-      console.log(cartId);
+      const cartId = req?.user?.user?.cart?._id;
       const cart = await CartRepository.getProducts(cartId);
+      const userMail = req?.user?.user?.email
+      
 
       if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -203,6 +208,10 @@ class CartController {
       }
 
       await CartRepository.deleteProductsFromCart(cartId);
+
+      const cartItemsFormatted = CartRepository.formatCartItems(cart);
+      
+      await sendPurchaseEmail(userMail, cart);
       res.status(200).json({ message: 'Compra realizada con éxito' });
     } catch (error) {
       res.status(404).json(error.message);

@@ -4,27 +4,51 @@
 <head>
   <title>Detalles del Carrito</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #161616;
+      color: #fff;
+    }
+    .card-custom {
+      background-color: #495057;
+      border: none;
+      border-radius: 0.25rem;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    .btn-custom {
+      background-color: #6c757d;
+      color: #fff;
+    }
+    .btn-custom:hover {
+      background-color: #7a8288;
+    }
+    .icon {
+      color: #adb5bd;
+      margin-right: 8px;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container mt-4">
-    <h1>Detalles del Carrito</h1>
+    <h1 class="text-white">Detalles del Carrito</h1>
 
-    <h2>Productos en el carrito:</h2>
-    <ul class="list-group pt-5">
+    <h2 class="text-light mb-4">Productos en el carrito:</h2>
+    <ul class="list-group">
       {{#each cartItems}}
-      <li class="list-group-item text-black">
-        <h2>{{this.product.email}}</h2>
-        <strong>{{this.product.title}}</strong> - Precio: ${{this.product.price}}
-        <p>cantidad: <span>{{this.quantity}}</span></p>
-        <button class="btn btn-danger"
-          onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')">Eliminar del
-          carrito</button>
+      <li class="list-group-item card-custom mb-3">
+        <h3 class="mb-2"><i class="fas fa-tag icon"></i>{{this.product.title}}</h3>
+        <p class="mb-1"><strong>Precio:</strong> ${{this.product.price}}</p>
+        <p class="mb-2"><strong>Cantidad:</strong> <span>{{this.quantity}}</span></p>
+        <button class="btn btn-custom"
+          onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')"><i class="fas fa-trash-alt"></i> Eliminar del carrito</button>
       </li>
       {{/each}}
     </ul>
-    <button class="btn btn-success mt-2" onclick="checkout()" id="finalizarCompra">Finalizar
-      compra</button>
+    <button class="btn btn-custom mt-3" onclick="checkout()" id="finalizarCompra"><i class="fas fa-shopping-cart"></i> Finalizar compra</button>
   </div>
 
   <script>
@@ -37,7 +61,6 @@
         console.log(response)
 
       } catch (error) {
-        console.log('entre catch')
         console.error(error);
       }
     }
@@ -47,12 +70,14 @@
         const res = await fetch(`/api/carts/purchase`, {
           method: 'PUT',
         });
-        console.log(res);
+
+        if(res?.status === 200){
+          window.location.href = '/checkout';
+        }
       } catch (error) {
         console.error(error);
       }
     }
-
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
