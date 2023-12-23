@@ -95,14 +95,11 @@ module.exports = (app) => {
 
   app.get('/products/:productId', async (req, res) => {
     try {
-      const pm = require('../dao/products/productsService/productManager');
-      const productId = parseInt(req.params.productId);
-      console.log(productId)
-      const product = await pm.getProductById(productId);
-     
-      if (product) {
-        res.render('products/productDetails', { product });
-        console.log(product)
+      const pm = require('../dao/products/productRepository/productRepository');
+      const truePm = new pm()
+      const products = await truePm.getProductById(req.params.productId);
+      if (products) {
+        res.render('products/productDetails', { product: products[0].toObject() });
       } else {
         res.status(404).json({ error: 'Producto no encontrado' });
       }
