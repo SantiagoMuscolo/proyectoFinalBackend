@@ -29,13 +29,10 @@ class ProductRepository {
       if (await this.isValidateCode(productData.code)) {
         return 'Este producto ya existe!';
       }
-      const user = await userModel.findOne({ email: owner }); 
-      const isPremiumUser = user && user.isPremium;
-      const productOwner = isPremiumUser ? owner : 'admin';
       const newProductSave = new productModel({
         status: true,
         thumbnails: [],
-        owner: productOwner,
+        owner: owner,
         ...productData,
       });
       await newProductSave.save();

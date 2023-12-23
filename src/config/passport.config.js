@@ -41,7 +41,7 @@ const initializePassport = () => {
           password: hashedPassword,
           role,
           cart: cartId,
-          isPremium: false
+          isPremium: true
         };
 
         let result = await userModel.create(newUser);
